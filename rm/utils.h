@@ -53,7 +53,7 @@
     } while (0)
 
 json_object *put_inside_json_array(json_object *jobj);
-char *url_add_filter(const char *restrict url, const char *restrict key, const char *restrict value);
+char *url_add_filter(char *restrict url, const char *restrict key, const char *restrict value);
 char *make_url_page(const char *restrict endpoint, size_t page);
 char *make_url_id_list(const char *restrict endpoint, uint64_t array_id[], size_t array_len);
 char *make_url_id(const char *restrict endpoint, uint64_t id);
