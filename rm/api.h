@@ -23,11 +23,11 @@
 
 #define rm_da_entity_clear(p, e)                \
     do {                                        \
-        if (p && p->da_##e) {                   \
-            for (size_t i = 0; i < p->len; i++) \
-                rm_##e##_clear(p->da_##e[i]);    \
-            free(p->da_##e);                    \
-            free(p);                            \
+        if ((p) && (p)->da_##e) {                   \
+            for (size_t i = 0; i < (p)->len; i++) \
+                rm_##e##_clear((p)->da_##e[i]);    \
+            free((p)->da_##e);                    \
+            free((p));                            \
         }                                       \
     } while (0)
 

@@ -3,7 +3,6 @@
 #include "api.h"
 #include "types.h"
 #include "utils.h"
-
 #include "character.h"
 #include "episode.h"
 #include "location.h"
@@ -19,7 +18,6 @@ void *rm_entity_get_page(rm_info_t *info, uint64_t page, void *filter, rm_entity
 
     if (page == 0) page = 1;
 
-
     switch (e_entity) {
         case RM_LOCATION:
             url = make_url_page(RM_API_URL_LOCATION, page);
@@ -27,11 +25,9 @@ void *rm_entity_get_page(rm_info_t *info, uint64_t page, void *filter, rm_entity
         case RM_CHARACTER:
             url = make_url_page(RM_API_URL_CHARACTER, page);
             break;
-#if 0
         case RM_EPISODE:
             url = make_url_page(RM_API_URL_EPISODE, page);
             break;
-#endif
     }
 
     if (!url)
@@ -45,11 +41,9 @@ void *rm_entity_get_page(rm_info_t *info, uint64_t page, void *filter, rm_entity
             case RM_CHARACTER:
                 url = character_parse_filter(url, (rm_character_t *)filter);
                 break;
-#if 0
             case RM_EPISODE:
                 url = episode_parse_filter(url, (rm_episode_t *)filter);
                 break;        
-#endif
         }
         
         if (!url)
@@ -150,7 +144,7 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
 
             index = ((rm_character_arr_t *)entity[0])->len;
             break;
-#if 0
+
         case RM_EPISODE:
             tmp = realloc(((rm_episode_arr_t *)entity[0])->da_episode, total_size);
 
@@ -163,7 +157,6 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
 
             index = ((rm_episode_arr_t *)entity[0])->len;
             break;
-#endif
     }
 
     for (size_t i = 2; i <= total_pages; i++) {
@@ -201,7 +194,7 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
                 free(((rm_character_arr_t *)entity[1])->da_character);
                 free(entity[1]);
                 break;
-#if 0
+
             case RM_EPISODE:
                 entity[1] = rm_entity_get_page(&info, i, filter, RM_EPISODE);
         
@@ -215,11 +208,11 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
 
                 ((rm_episode_arr_t *)entity[0])->len += ((rm_episode_arr_t *)entity[1])->len;
 
-                free(((rm_episode_arr_t *)entity[1])->da_epsiode);
+                free(((rm_episode_arr_t *)entity[1])->da_episode);
                 free(entity[1]);
                 break;
-#endif
         }
+
         clear_all_info(&info);
     }
 
@@ -248,7 +241,7 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
 
             ((rm_character_arr_t *)entity[0])->da_character = tmp;
             break;
-#if 0
+
         case RM_EPISODE:
             tmp = realloc(((rm_episode_arr_t *)entity[0])->da_episode, (((rm_episode_arr_t *)entity[0])->len * sizeof(rm_episode_t *)));
 
@@ -260,9 +253,6 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
 
             ((rm_episode_arr_t *)entity[0])->da_episode = tmp;
             break;
-#endif
-
-
     }
 
     return entity[0];
@@ -368,17 +358,16 @@ void *rm_entity_get(uint64_t id, rm_entity_t e_entity) {
         case RM_CHARACTER: 
             entity = parse_character(jobj);
             break;
-#if 0
         case RM_EPISODE: 
             entity = parse_episode(jobj);
             break;
-#endif
     }
 
     json_object_put(jobj);
 
     return entity;
 }
+
 void *parse_entity_list(json_object **jobj, rm_entity_t e_entity) {
     void *entity = NULL;
     json_object *tmp_obj = NULL;
@@ -404,11 +393,9 @@ void *parse_entity_list(json_object **jobj, rm_entity_t e_entity) {
         case RM_CHARACTER:
             entity = parse_entity_array(*jobj, RM_CHARACTER);
             break;
-#if 0
         case RM_EPISODE:
             entity = parse_entity_array(*jobj, RM_EPISODE);
             break;
-#endif
     }
 
     return entity;
@@ -435,11 +422,9 @@ void *parse_entity_all(rm_info_t *info, json_object *jobj, rm_entity_t e_entity)
         case RM_CHARACTER:
             entity = parse_entity_array(tmp_obj, RM_CHARACTER);
             break;
-#if 0
         case RM_EPISODE:
             entity = parse_entity_array(tmp_obj, RM_EPISODE);
             break;
-#endif
     }
 
     return entity;  
@@ -483,16 +468,14 @@ void *parse_entity_array(json_object *jobj, int e_entity) {
                 return NULL;
             
             break;
-#if 0   
+
         case RM_EPISODE:
-            //RM_OBJECT_NEW(entity->da_episode, len, rm_episode_t *);
             RM_OBJECT_NEW_DA((rm_episode_arr_t *)entity, len, episode);
         
             if (!((rm_episode_arr_t *)entity)->da_episode)
                 return NULL;
         
             break;
-#endif
     }
 
     for (size_t i = 0; i < len; i++) {
@@ -506,11 +489,9 @@ void *parse_entity_array(json_object *jobj, int e_entity) {
                 case RM_CHARACTER:
                     rm_da_entity_clear(((rm_character_arr_t *)entity), character);
                     break;
-#if 0
                 case RM_EPISODE:
-                    rm_da_entity_clear((rm_episode_arr_t *)entity, episode);
+                    rm_da_entity_clear(((rm_episode_arr_t *)entity), episode);
                     break; 
-#endif
             }
 
             return  NULL;
@@ -539,7 +520,6 @@ void *parse_entity_array(json_object *jobj, int e_entity) {
 
                 break;
 
-#if 0
             case RM_EPISODE:
                 ((rm_episode_arr_t *)entity)->da_episode[i] = parse_episode(tmp_obj);
                 ((rm_episode_arr_t *)entity)->len++;
@@ -550,24 +530,12 @@ void *parse_entity_array(json_object *jobj, int e_entity) {
                 }
 
                 break; 
-#endif
         }
 
-#if 0
-        location->da_location[i] = parse_location(tmp_obj);
-        location->len++;
-        
-        if (!location->da_location[i]) {
-            rm_da_location_clear(location);
-            return NULL;
-        }
-#endif
     }
 
     return entity;
 }
-
-
 
 mem_t rm_api_request(const char *restrict endpoint) {
     CURL *curl_hndl = NULL;
