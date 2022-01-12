@@ -49,6 +49,12 @@ struct RM_location_array {
     rm_location_t **da_location; /**< An "Array" of struct RM_location */
     size_t len; /**< Len of the "Array" */
 };
+typedef struct RM_location_array rm_location_arr_t;
+
+
+rm_location_t *parse_location(json_object *jobj);
+char *location_parse_filter(char *url, rm_location_t *filter);
+void rm_location_clear(rm_location_t *location);
 
 /**
  * \fn rm_location_t rm_location_get(uint64_t id)

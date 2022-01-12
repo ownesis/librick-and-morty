@@ -14,8 +14,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "rm_types.h"
-#include "rm_api.h"
+#include "types.h"
+#include "api.h"
 
 #define RM_API_URL_EPISODE RM_API_ENDPOINT "/episode/"
 
@@ -32,7 +32,7 @@ struct RM_episode {
     char *name; /**< Name (string) of the episode */
     char *air_date; /**< Air date (string) of the episode */
     char *episode; /**< Episode (String) */
-    da_array_t characters; /**< Charactes list (dynamic array of string urls) who have been seen in the episode */
+    da_array_str_t characters; /**< Charactes list (dynamic array of string urls) who have been seen in the episode */
     char *url; /**< Url (string) of the episode */
     char *created; /**< Date time (string) at which the episode was created in the database */ 
 };
@@ -45,6 +45,7 @@ struct RM_episode_array {
     rm_episode_t *da_episode; /**< An "Array" of struct RM_episode */
     size_t len; /**< Len of the "Array" */
 };
+typedef struct RM_episode_array rm_episode_arr_t;
 
 /**
  * \fn rm_episode_t rm_episode_get(uint64_t id)

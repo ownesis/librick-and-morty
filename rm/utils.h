@@ -52,6 +52,18 @@
             u = url_add_filter(u, #n, f->n);    \
     } while (0)
 
+#define RM_OBJECT_NEW(p, n, t)                  \
+    do {                                        \
+        p = calloc((n), sizeof(t));             \
+        if (p)                                  \
+            memset(p, 0, ((n) * sizeof(t)));    \
+    } while (0)     
+
+
+#define RM_OBJECT_NEW_DA(p, n, e) \
+       RM_OBJECT_NEW((p)->da_##e, (n), rm_##e##_t *);
+
+
 json_object *put_inside_json_array(json_object *jobj);
 char *url_add_filter(char *restrict url, const char *restrict key, const char *restrict value);
 char *make_url_page(const char *restrict endpoint, size_t page);

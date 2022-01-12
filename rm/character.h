@@ -66,6 +66,10 @@ struct RM_character_array {
     struct RM_character **da_character; /**< An "array" of struct RM_character */
     size_t len; /**< Len of the "Array" */
 };
+typedef struct RM_character_array rm_character_arr_t;
+
+rm_character_t *parse_character(json_object *jobj);
+char *character_parse_filter(char *url, rm_character_t *filter);
 
 /**
  * \fn void rm_character_clear(rm_character_t *character)
