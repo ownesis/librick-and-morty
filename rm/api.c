@@ -59,9 +59,6 @@ void *rm_entity_get_page(rm_info_t *info, uint64_t page, void *filter, rm_entity
 
     free(url);
 
-    if (!chunk.ptr)
-        return NULL;
-
     jobj = json_tokener_parse(chunk.ptr);
 
     if (!jobj)
@@ -69,17 +66,7 @@ void *rm_entity_get_page(rm_info_t *info, uint64_t page, void *filter, rm_entity
     
     free(chunk.ptr);
  
-    switch (e_entity) {
-        case RM_LOCATION: 
-            entity = parse_entity_all(info, jobj, RM_LOCATION);
-            break;
-        case RM_CHARACTER: 
-            entity = parse_entity_all(info, jobj, RM_CHARACTER);
-            break;
-        case RM_EPISODE: 
-            entity = parse_entity_all(info, jobj, RM_EPISODE);
-            break;
-    }
+    entity = parse_entity_all(info, jobj, e_entity);
 
     json_object_put(jobj);
     
@@ -94,27 +81,11 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
     size_t total_size = 0;
     size_t index = 0;
 
-    switch (e_entity) {
-        case RM_LOCATION:
-            entity[0] = rm_entity_get_page(&info, 1, filter, RM_LOCATION);
-            if (!entity[0])
-                return NULL;
-            break;
-        case RM_CHARACTER:
-            entity[0] = rm_entity_get_page(&info, 1, filter, RM_CHARACTER);
-            if (!entity[0])
-                return NULL;
-            break;
-        case RM_EPISODE:
-            entity[0] = rm_entity_get_page(&info, 1, filter, RM_EPISODE);
-            if (!entity[0])
-                return NULL;
-            break;
-    } 
+    entity[0] = rm_entity_get_page(&info, 1, filter, e_entity);
     
     total_pages = info.pages;
 
-    clear_all_info(&info);
+    rm_all_info_clear(&info);
 
     total_size = ((total_pages * 20) * sizeof(rm_location_t *));
 
@@ -123,7 +94,7 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
             tmp = realloc(((rm_location_arr_t *)entity[0])->da_location, total_size);
 
             if (!tmp) {
-                rm_da_entity_clear(((rm_location_arr_t *)entity[0]), location);
+                rm_entity_da_clear(((rm_location_arr_t *)entity[0]), location);
                 return NULL;
             }
 
@@ -136,7 +107,7 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
             tmp = realloc(((rm_character_arr_t *)entity[0])->da_character, total_size);
 
             if (!tmp) {
-                rm_da_entity_clear(((rm_character_arr_t *)entity[0]), character);
+                rm_entity_da_clear(((rm_character_arr_t *)entity[0]), character);
                 return NULL;
             }
 
@@ -149,7 +120,7 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
             tmp = realloc(((rm_episode_arr_t *)entity[0])->da_episode, total_size);
 
             if (!tmp) {
-                rm_da_entity_clear(((rm_episode_arr_t *)entity[0]), episode);
+                rm_entity_da_clear(((rm_episode_arr_t *)entity[0]), episode);
                 return NULL;
             }
 
@@ -165,7 +136,7 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
                 entity[1] = rm_entity_get_page(&info, i, filter, RM_LOCATION);
         
                 if (!entity[1]) {
-                    rm_da_entity_clear(((rm_location_arr_t *)entity[0]), location);
+                    rm_entity_da_clear(((rm_location_arr_t *)entity[0]), location);
                     return NULL;
                 }
 
@@ -182,7 +153,7 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
                 entity[1] = rm_entity_get_page(&info, i, filter, RM_CHARACTER);
         
                 if (!entity[1]) {
-                    rm_da_entity_clear(((rm_character_arr_t *)entity[0]), character);
+                    rm_entity_da_clear(((rm_character_arr_t *)entity[0]), character);
                     return NULL;
                 }
 
@@ -199,7 +170,7 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
                 entity[1] = rm_entity_get_page(&info, i, filter, RM_EPISODE);
         
                 if (!entity[1]) {
-                    rm_da_entity_clear(((rm_episode_arr_t *)entity[0]), episode);
+                    rm_entity_da_clear(((rm_episode_arr_t *)entity[0]), episode);
                     return NULL;
                 }
 
@@ -213,7 +184,7 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
                 break;
         }
 
-        clear_all_info(&info);
+        rm_all_info_clear(&info);
     }
 
 
@@ -222,8 +193,8 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
             tmp = realloc(((rm_location_arr_t *)entity[0])->da_location, (((rm_location_arr_t *)entity[0])->len * sizeof(rm_location_t *)));
 
             if (!tmp) {
-                rm_da_entity_clear(((rm_location_arr_t *)entity[1]), location);
-                rm_da_entity_clear(((rm_location_arr_t *)entity[1]), location);
+                rm_entity_da_clear(((rm_location_arr_t *)entity[1]), location);
+                rm_entity_da_clear(((rm_location_arr_t *)entity[1]), location);
                 return NULL;
             }
 
@@ -234,8 +205,8 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
             tmp = realloc(((rm_character_arr_t *)entity[0])->da_character, (((rm_character_arr_t *)entity[0])->len * sizeof(rm_character_t *)));
 
             if (!tmp) {
-                rm_da_entity_clear(((rm_character_arr_t *)entity[1]), character);
-                rm_da_entity_clear(((rm_character_arr_t *)entity[1]), character);
+                rm_entity_da_clear(((rm_character_arr_t *)entity[1]), character);
+                rm_entity_da_clear(((rm_character_arr_t *)entity[1]), character);
                 return NULL;
             }
 
@@ -246,8 +217,8 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
             tmp = realloc(((rm_episode_arr_t *)entity[0])->da_episode, (((rm_episode_arr_t *)entity[0])->len * sizeof(rm_episode_t *)));
 
             if (!tmp) {
-                rm_da_entity_clear(((rm_episode_arr_t *)entity[1]), episode);
-                rm_da_entity_clear(((rm_episode_arr_t *)entity[1]), episode);
+                rm_entity_da_clear(((rm_episode_arr_t *)entity[1]), episode);
+                rm_entity_da_clear(((rm_episode_arr_t *)entity[1]), episode);
                 return NULL;
             }
 
@@ -296,17 +267,7 @@ void *rm_entity_get_list(uint64_t array_id[], size_t array_len, rm_entity_t e_en
  
     free(chunk.ptr);
 
-    switch (e_entity) {
-        case RM_LOCATION:
-            entity = parse_entity_list(&jobj, RM_LOCATION);
-            break;
-        case RM_CHARACTER:
-            entity = parse_entity_list(&jobj, RM_CHARACTER);
-            break;
-        case RM_EPISODE:
-            entity = parse_entity_list(&jobj, RM_EPISODE);
-            break;
-    }
+    entity = parse_entity_list(&jobj, e_entity);
 
     json_object_put(jobj);
 
@@ -385,18 +346,7 @@ void *parse_entity_list(json_object **jobj, rm_entity_t e_entity) {
        *jobj = tmp_obj;
     }
         
-    switch (e_entity) {
-        case RM_LOCATION:
-            entity = parse_entity_array(*jobj, RM_LOCATION);
-            break;
-
-        case RM_CHARACTER:
-            entity = parse_entity_array(*jobj, RM_CHARACTER);
-            break;
-        case RM_EPISODE:
-            entity = parse_entity_array(*jobj, RM_EPISODE);
-            break;
-    }
+    entity = parse_entity_array(*jobj, e_entity);
 
     return entity;
 }
@@ -414,18 +364,7 @@ void *parse_entity_all(rm_info_t *info, json_object *jobj, rm_entity_t e_entity)
     if (!json_object_object_get_ex(jobj, "results", &tmp_obj))
         return NULL;        
 
-    switch (e_entity) {
-        case RM_LOCATION:
-            entity = parse_entity_array(tmp_obj, RM_LOCATION);
-            break;
-
-        case RM_CHARACTER:
-            entity = parse_entity_array(tmp_obj, RM_CHARACTER);
-            break;
-        case RM_EPISODE:
-            entity = parse_entity_array(tmp_obj, RM_EPISODE);
-            break;
-    }
+    entity = parse_entity_array(tmp_obj, e_entity);
 
     return entity;  
 }
@@ -484,13 +423,13 @@ void *parse_entity_array(json_object *jobj, int e_entity) {
         if (!tmp_obj) {
             switch (e_entity) {
                 case RM_LOCATION:
-                    rm_da_entity_clear(((rm_location_arr_t *)entity), location);
+                    rm_entity_da_clear(((rm_location_arr_t *)entity), location);
                     break;
                 case RM_CHARACTER:
-                    rm_da_entity_clear(((rm_character_arr_t *)entity), character);
+                    rm_entity_da_clear(((rm_character_arr_t *)entity), character);
                     break;
                 case RM_EPISODE:
-                    rm_da_entity_clear(((rm_episode_arr_t *)entity), episode);
+                    rm_entity_da_clear(((rm_episode_arr_t *)entity), episode);
                     break; 
             }
 
@@ -503,7 +442,7 @@ void *parse_entity_array(json_object *jobj, int e_entity) {
                 ((rm_location_arr_t *)entity)->len++;
                 
                 if (!((rm_location_arr_t *)entity)->da_location[i]) {
-                    rm_da_location_clear((rm_location_arr_t *)entity);
+                    rm_entity_da_clear((rm_location_arr_t *)entity, location);
                     return NULL;
                 }
 
@@ -514,7 +453,7 @@ void *parse_entity_array(json_object *jobj, int e_entity) {
                 ((rm_character_arr_t *)entity)->len++;
 
                 if (!((rm_character_arr_t *)entity)->da_character[i]) {
-                    rm_da_character_clear((rm_character_arr_t *)entity);
+                    rm_entity_da_clear((rm_character_arr_t *)entity, character);
                     return NULL;
                 }
 
@@ -525,7 +464,7 @@ void *parse_entity_array(json_object *jobj, int e_entity) {
                 ((rm_episode_arr_t *)entity)->len++;
 
                 if (!((rm_episode_arr_t *)entity)->da_episode[i]) {
-                    rm_da_episode_clear((rm_episode_arr_t *)entity);
+                    rm_entity_da_clear((rm_episode_arr_t *)entity, episode);
                     return NULL;
                 }
 
@@ -610,7 +549,7 @@ _Bool parse_all_info(rm_info_t *info, json_object *jobj) {
     return 1;
 }
 
-void clear_all_info(rm_info_t *info) {
+void rm_all_info_clear(rm_info_t *info) {
     if (!info)
         return;
 

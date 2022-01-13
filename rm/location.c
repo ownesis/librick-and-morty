@@ -102,6 +102,6 @@ rm_location_arr_t *rm_location_get_all(rm_location_t *filter) {
     return (rm_location_arr_t *)rm_entity_get_all((void *)filter, RM_LOCATION);
 }
 
-void rm_da_location_clear(rm_location_arr_t *location) {
-    rm_da_entity_clear(((rm_location_arr_t *)location),  location);
+void rm_location_da_clear(rm_location_arr_t *location) {
+    rm_entity_da_clear(((rm_location_arr_t *)location),  location);
 }

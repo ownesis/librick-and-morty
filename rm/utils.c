@@ -269,12 +269,10 @@ char *num_to_str(uint64_t n) {
 
     buf_size = count_digit_in_number(n);
     
-    buf = malloc(buf_size+1);
+    buf = calloc(buf_size+1, sizeof(char));
     
     if (!buf) 
         return NULL;
-
-    buf[buf_size] = '\0';
 
     ret = snprintf(buf, buf_size+1, "%lu", n);
 

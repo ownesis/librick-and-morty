@@ -19,7 +19,7 @@ set(HDRS
     types.h
     )
 
-add_library(rick-and-morty SHARED ${SRCS} ${HRDS})
+add_library(rick-and-morty STATIC ${SRCS} ${HRDS})
 
 find_package(CURL)
 find_package(JSON-C NAMES json-c)

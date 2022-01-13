@@ -122,6 +122,6 @@ rm_character_arr_t *rm_character_get_all(rm_character_t *filter) {
     return (rm_character_arr_t *)rm_entity_get_all((void *)filter, RM_CHARACTER);
 }
 
-void rm_da_character_clear(rm_character_arr_t *character) {
-    rm_da_entity_clear(((rm_character_arr_t *)character),  character);
+void rm_character_da_clear(rm_character_arr_t *character) {
+    rm_entity_da_clear(((rm_character_arr_t *)character),  character);
 }

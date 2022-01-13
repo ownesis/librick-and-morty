@@ -17,7 +17,7 @@ void rm_episode_clear(rm_episode_t *episode) {
     FREE_IF_NONULL(episode->air_date);
     FREE_IF_NONULL(episode->episode);
     
-    if (episode->episode) {
+    if (episode->characters) {
         for (size_t i = 0; i < episode->characters_len; i++)
             free(episode->characters[i]);
 
@@ -52,7 +52,7 @@ rm_episode_t *parse_episode(json_object *jobj) {
     JSON_GET_OBJ_STR(jobj, episode, created);
 
     json_object *_tmp = NULL;
-    json_object_object_get_ex(jobj, "character", &_tmp);
+    json_object_object_get_ex(jobj, "characters", &_tmp);
 
     if (json_object_get_type(_tmp) == json_type_array) {
         episode->characters_len = json_object_array_length(_tmp);
@@ -100,6 +100,6 @@ rm_episode_arr_t *rm_episode_get_all(rm_episode_t *filter) {
     return (rm_episode_arr_t *)rm_entity_get_all((void *)filter, RM_EPISODE);
 }
 
-void rm_da_episode_clear(rm_episode_arr_t *episode) {
-    rm_da_entity_clear(((rm_episode_arr_t *)episode),  episode);
+void rm_episode_da_clear(rm_episode_arr_t *episode) {
+    rm_entity_da_clear(((rm_episode_arr_t *)episode),  episode);
 }
