@@ -1,0 +1,98 @@
+.TH "RM_character" 3 "Thu Jan 13 2022" "Version 0.1.0" "Rick And Morty C Library" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+RM_character \- Structure for character attributes\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include 'Character attributes'\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "uint64_t \fBid\fP"
+.br
+.ti -1c
+.RI "char * \fBname\fP"
+.br
+.ti -1c
+.RI "char * \fBstatus\fP"
+.br
+.ti -1c
+.RI "char * \fBspecies\fP"
+.br
+.ti -1c
+.RI "char * \fBtype\fP"
+.br
+.ti -1c
+.RI "char * \fBgender\fP"
+.br
+.ti -1c
+.RI "struct \fBRM_dict\fP \fBorigin\fP"
+.br
+.ti -1c
+.RI "struct \fBRM_dict\fP \fBlocation\fP"
+.br
+.ti -1c
+.RI "char * \fBimage\fP"
+.br
+.ti -1c
+.RI "size_t \fBepisode_len\fP"
+.br
+.ti -1c
+.RI "da_array_str_t \fBepisode\fP"
+.br
+.ti -1c
+.RI "char * \fBurl\fP"
+.br
+.ti -1c
+.RI "char * \fBcreated\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Structure for character attributes\&. 
+
+\fBRM_character\fP have typedef : rm_character_t
+.PP
+\fBSee also\fP
+.RS 4
+https://rickandmortyapi.com/documentation/#character-schema 
+.RE
+.PP
+
+.SH "Field Documentation"
+.PP 
+.SS "char* created"
+Date time (string) at which the character was created in the database\&. 
+.SS "da_array_str_t episode"
+Episode list (dynamic array of url string) which this character appeared 
+.SS "size_t episode_len"
+(size_t) Length of episode array 
+.SS "char* gender"
+Gender (string) of the character\&. ('Female' | 'Male' | 'Genderless' | 'unknown') 
+.SS "uint64_t id"
+ID of the character 
+.SS "char* image"
+Image (string url) of the character, image of 300x300px 
+.SS "struct \fBRM_dict\fP location"
+Location (struct \fBRM_dict\fP) of the character 
+.SS "char* name"
+Name (string) of the character 
+.SS "struct \fBRM_dict\fP origin"
+Origin (struct \fBRM_dict\fP) of the character 
+.SS "char* species"
+Species (string) of the character 
+.SS "char* status"
+Status (string) of the character\&. ('unknown' | 'Dead' | 'Alive') 
+.SS "char* type"
+Type (string) of the character 
+.SS "char* url"
+Url (string) of the character 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Rick And Morty C Library from the source code\&.

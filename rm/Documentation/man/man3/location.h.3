@@ -1,0 +1,200 @@
+.TH "location.h" 3 "Thu Jan 13 2022" "Version 0.1.0" "Rick And Morty C Library" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+location.h \- Functions and structures for 'location' API\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stddef\&.h>\fP
+.br
+\fC#include <stdint\&.h>\fP
+.br
+\fC#include 'types\&.h'\fP
+.br
+\fC#include 'api\&.h'\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "struct \fBRM_location\fP"
+.br
+.RI "Structure for location attributes\&. "
+.ti -1c
+.RI "struct \fBRM_location_array\fP"
+.br
+.RI "Structure for an array of \fBRM_location\fP struct and its length\&. "
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBRM_API_URL_LOCATION\fP   RM_API_ENDPOINT '/location/'"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBRM_location\fP \fBrm_location_t\fP"
+.br
+.ti -1c
+.RI "typedef struct \fBRM_location_array\fP \fBrm_location_arr_t\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBrm_location_t\fP * \fBparse_location\fP (json_object *jobj)"
+.br
+.ti -1c
+.RI "char * \fBlocation_parse_filter\fP (char *url, \fBrm_location_t\fP *filter)"
+.br
+.ti -1c
+.RI "void \fBrm_location_clear\fP (\fBrm_location_t\fP *location)"
+.br
+.RI "This function free the episode array fields and location\&. "
+.ti -1c
+.RI "void \fBrm_location_da_clear\fP (\fBrm_location_arr_t\fP *location)"
+.br
+.RI "This function free all episode fields and location inside da_array location\&. "
+.ti -1c
+.RI "\fBrm_location_t\fP * \fBrm_location_get\fP (uint64_t id)"
+.br
+.RI "This function get all attributs of the location with the specific ID\&. "
+.ti -1c
+.RI "\fBrm_location_arr_t\fP * \fBrm_location_get_all\fP (\fBrm_location_t\fP *filter)"
+.br
+.RI "This function get all locations and their attributes\&. "
+.ti -1c
+.RI "\fBrm_location_arr_t\fP * \fBrm_location_get_list\fP (uint64_t array_id[], size_t array_len)"
+.br
+.RI "This function get all attributes of location with id inside array_id\&. "
+.ti -1c
+.RI "\fBrm_location_arr_t\fP * \fBrm_location_get_page\fP (\fBrm_info_t\fP *info, uint64_t page, \fBrm_location_t\fP *filter)"
+.br
+.RI "This function get an array of all location found in the specified page\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Functions and structures for 'location' API\&. 
+
+
+.PP
+\fBAuthor\fP
+.RS 4
+ownesis 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+9 janv\&. 2022
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+https://rickandmortyapi.com/documentation/#location 
+.RE
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "void rm_location_clear (\fBrm_location_t\fP * location)"
+
+.PP
+This function free the episode array fields and location\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIctx\fP (rm_location_t *) Address of rm_location_t structure to free\&. 
+.RE
+.PP
+
+.SS "void rm_location_da_clear (\fBrm_location_arr_t\fP * location)"
+
+.PP
+This function free all episode fields and location inside da_array location\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIctx\fP (rm_location_arr_t *) Address of \fBRM_location_array\fP structure to free`\&. 
+.RE
+.PP
+
+.SS "\fBrm_location_t\fP * rm_location_get (uint64_t uid)"
+
+.PP
+This function get all attributs of the location with the specific ID\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIid\fP (uint64_t) The ID of the location to get this attributs\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+(rm_location_t*) Address of struct \fBRM_location\fP with field filled to free with \fCrm_location_clear\fP\&. 
+.RE
+.PP
+
+.SS "\fBrm_location_arr_t\fP * rm_location_get_all (\fBrm_location_t\fP * filter)"
+
+.PP
+This function get all locations and their attributes\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIfilter\fP (rm_location_t *) Address of a \fBRM_location\fP structure to use like filter (only the following field are verifed: name, status, species, type, gender) he can be NULL\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+address of struct \fBRM_location_array\fP to free with \fCrm_da_location_clear\fP\&. 
+.RE
+.PP
+
+.SS "\fBrm_location_arr_t\fP * rm_location_get_list (uint64_t array_id[], size_t array_len)"
+
+.PP
+This function get all attributes of location with id inside array_id\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIarray_id\fP (uint64_t[]) An array with the number of ID of characeters to get\&. 
+.br
+\fIarray_len\fP (size_t) The len of array\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Address of struct \fBRM_location_array\fP to free with \fCrm_location_da_clear\fP\&. 
+.RE
+.PP
+
+.SS "\fBrm_location_arr_t\fP * rm_location_get_page (\fBrm_info_t\fP * info, uint64_t page, \fBrm_location_t\fP * filter)"
+
+.PP
+This function get an array of all location found in the specified page\&. 
+.PP
+\fBParameters\fP
+.RS 4
+\fIinfo\fP (rm_info_t *) Address of rm_info_t\&. 
+.br
+\fIpage\fP (size_t) the page to get\&. 
+.br
+\fIfilter\fP (rm_location_t *) Addres of a \fBRM_location\fP structure to use like filter (only the following field are verifed: name, status, species, type, gender) he can be NULL\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+address of struct \fBRM_location_array\fP to free with \fCrm_location_da_clear\fP\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Rick And Morty C Library from the source code\&.

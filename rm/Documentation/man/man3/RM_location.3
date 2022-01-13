@@ -1,0 +1,71 @@
+.TH "RM_location" 3 "Thu Jan 13 2022" "Version 0.1.0" "Rick And Morty C Library" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+RM_location \- Structure for location attributes\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <location\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "uint64_t \fBid\fP"
+.br
+.ti -1c
+.RI "char * \fBname\fP"
+.br
+.ti -1c
+.RI "char * \fBtype\fP"
+.br
+.ti -1c
+.RI "char * \fBdimension\fP"
+.br
+.ti -1c
+.RI "size_t \fBresidents_len\fP"
+.br
+.ti -1c
+.RI "da_array_str_t \fBresidents\fP"
+.br
+.ti -1c
+.RI "char * \fBurl\fP"
+.br
+.ti -1c
+.RI "char * \fBcreated\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Structure for location attributes\&. 
+
+\fBRM_location\fP have typedef : rm_location_t
+.PP
+\fBSee also\fP
+.RS 4
+https://rickandmortyapi.com/documentation/#location-schema 
+.RE
+.PP
+
+.SH "Field Documentation"
+.PP 
+.SS "char* created"
+Dte time (string) at which the location was created in the database\&. 
+.SS "char* dimension"
+Dimension (string) of the location 
+.SS "uint64_t id"
+ID (uint64_t) of the location 
+.SS "char* name"
+Name (string) of the location 
+.SS "da_array_str_t residents"
+Len (size_t) of residents array Residents list (dynamyc array of string url) of location who have been last seen in location 
+.SS "char* type"
+Type (string) of the location 
+.SS "char* url"
+Link (string) of the location 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Rick And Morty C Library from the source code\&.

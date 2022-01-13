@@ -80,7 +80,7 @@ char *character_parse_filter(char *url, rm_character_t *filter);
 void rm_character_clear(rm_character_t *character);
 
 /**
- * \fn void rm_da_character_clear(rm_character_arr_t *character)
+ * \fn void rm_character_da_clear(rm_character_arr_t *character)
  * \brief This function free all episode fields and character inside da_array character.
  * \param[in] ctx (rm_character_arr_t *) Address of RM_character_array structure to free`.
  *
@@ -88,7 +88,7 @@ void rm_character_clear(rm_character_t *character);
 void rm_character_da_clear(rm_character_arr_t *character);
 
 /**
- * \fn rm_character_t rm_character_get(rm_ctx_t *ctx, uint64_t id)
+ * \fn rm_character_t *rm_character_get(uint64_t id)
  * \brief This function get all attributs of the character with the specific ID.
  * \param[in] id (uint64_t) The ID of the character to get this attributs.
  * \return (rm_character_t*) Address of struct RM_character with field filled to free with `rm_character_clear`.
@@ -116,13 +116,14 @@ rm_character_arr_t *rm_character_get_all(rm_character_t *filter);
 rm_character_arr_t *rm_character_get_list(uint64_t array_id[], size_t array_len);
 
 /**
- * \fn rm_character_arr_t *rm_character_get_filter(rm_info_t *info, rm_character_t *filter)
+ * \fn rm_character_arr_t *rm_character_get_page(rm_info_t *info, uint64_t page, rm_character_t *filter)
  * \brief This function get an array of all character found in the specified page.
+ * \param[out] info (rm_info_t *) Address of rm_info_t. 
  * \param[in] page (size_t) the page to get. 
  * \param[in] filter (rm_character_t *) Addres of a RM_character structure to use like filter (only the following field are verifed: name, status, species, type, gender) he can be NULL. 
  * \return address of struct RM_character_array to free with `rm_character_da_clear`.
  *
  * */
-struct RM_character_array *rm_character_get_page(rm_info_t *info, uint64_t page, rm_character_t *filter);
+rm_character_arr_t *rm_character_get_page(rm_info_t *info, uint64_t page, rm_character_t *filter);
 
 #endif /* __RICK_AND_MORTY_CHARACTER_H__ */

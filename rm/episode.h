@@ -60,7 +60,7 @@ char *episode_parse_filter(char *url, rm_episode_t *filter);
 void rm_episode_clear(rm_episode_t *episode);
 
 /**
- * \fn void rm_da_episode_clear(rm_episode_arr_t *episode)
+ * \fn void rm_episode_da_clear(rm_episode_arr_t *episode)
  * \brief This function free all episode fields and episode inside da_array episode.
  * \param[in] ctx (rm_episode_arr_t *) Address of RM_episode_array structure to free`.
  *
@@ -68,7 +68,7 @@ void rm_episode_clear(rm_episode_t *episode);
 void rm_episode_da_clear(rm_episode_arr_t *episode);
 
 /**
- * \fn rm_episode_t rm_episode_get(rm_ctx_t *ctx, uint64_t id)
+ * \fn rm_episode_t *rm_episode_get(uint64_t id)
  * \brief This function get all attributs of the episode with the specific ID.
  * \param[in] id (uint64_t) The ID of the episode to get this attributs.
  * \return (rm_episode_t*) Address of struct RM_episode with field filled to free with `rm_episode_clear`.
@@ -96,13 +96,14 @@ rm_episode_arr_t *rm_episode_get_all(rm_episode_t *filter);
 rm_episode_arr_t *rm_episode_get_list(uint64_t array_id[], size_t array_len);
 
 /**
- * \fn rm_episode_arr_t *rm_episode_get_filter(rm_info_t *info, rm_episode_t *filter)
+ * \fn rm_episode_arr_t *rm_episode_get_page(rm_info_t *info, uint64_t page, rm_episode_t *filter)
  * \brief This function get an array of all episode found in the specified page.
+ * \param[out] info (rm_info_t *) Address of rm_info_t. 
  * \param[in] page (size_t) the page to get. 
  * \param[in] filter (rm_episode_t *) Addres of a RM_episode structure to use like filter (only the following field are verifed: name, status, species, type, gender) he can be NULL. 
  * \return address of struct RM_episode_array to free with `rm_episode_da_clear`.
  *
  * */
-struct RM_episode_array *rm_episode_get_page(rm_info_t *info, uint64_t page, rm_episode_t *filter);
+rm_episode_arr_t *rm_episode_get_page(rm_info_t *info, uint64_t page, rm_episode_t *filter);
 
 #endif /* __RICK_AND_MORTY_EPISODE_H__ */

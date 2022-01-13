@@ -1,0 +1,71 @@
+.TH "RM_episode" 3 "Thu Jan 13 2022" "Version 0.1.0" "Rick And Morty C Library" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+RM_episode \- Structure for episode attributes\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fC#include <episode\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "uint64_t \fBid\fP"
+.br
+.ti -1c
+.RI "char * \fBname\fP"
+.br
+.ti -1c
+.RI "char * \fBair_date\fP"
+.br
+.ti -1c
+.RI "char * \fBepisode\fP"
+.br
+.ti -1c
+.RI "size_t \fBcharacters_len\fP"
+.br
+.ti -1c
+.RI "da_array_str_t \fBcharacters\fP"
+.br
+.ti -1c
+.RI "char * \fBurl\fP"
+.br
+.ti -1c
+.RI "char * \fBcreated\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Structure for episode attributes\&. 
+
+\fBRM_episode\fP have typedef : rm_episode_t
+.PP
+\fBSee also\fP
+.RS 4
+https://rickandmortyapi.com/documentation/#episode-schema 
+.RE
+.PP
+
+.SH "Field Documentation"
+.PP 
+.SS "char* air_date"
+Air date (string) of the episode 
+.SS "da_array_str_t characters"
+Len (size_t) of episodes array Characters list (dynamic array of string urls) who have been seen in the episode 
+.SS "char* created"
+Date time (string) at which the episode was created in the database 
+.SS "char* episode"
+Episode (String) 
+.SS "uint64_t id"
+ID (uint64_t) of the episode 
+.SS "char* name"
+Name (string) of the episode 
+.SS "char* url"
+Url (string) of the episode 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Rick And Morty C Library from the source code\&.
