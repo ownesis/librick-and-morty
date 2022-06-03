@@ -19,27 +19,32 @@ set(HDRS
     types.h
     )
 
+set(LIB_INCLUDE_DIR
+    "/usr/include/rick-and-morty/"
+   )
+
 add_library(rick-and-morty SHARED ${SRCS} ${HRDS})
 set_target_properties(rick-and-morty PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(rick-and-morty PROPERTIES SOVERSION ${PROJECT_VERSION})
-
 add_library(rick-and-morty_static STATIC ${SRCS} ${HRDS})
 set_target_properties(rick-and-morty_static PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(rick-and-morty_static PROPERTIES SOVERSION ${PROJECT_VERSION})
 
 include(GNUInstallDirs)
 
+install(DIRECTORY DESTINATION ${LIB_INCLUDE_DIR})
+install(FILES ${HDRS} DESTINATION ${LIB_INCLUDE_DIR})
 install(TARGETS rick-and-morty
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 install(TARGETS rick-and-morty_static
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+    PUBLIC_HEADER DESTINATION ${LIB_INCLUDE_DIR})
 
 install(TARGETS rick-and-morty
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+    PUBLIC_HEADER DESTINATION ${LIB_INCLUDE_DIR})
 
 find_package(CURL REQUIRED)
 find_package(JSON-C CONFIG REQUIRED)
