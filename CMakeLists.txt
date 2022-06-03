@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(librick-and-morty)
+project(librick-and-morty VERSION 0.1.0 DESCRIPTION "C library for https://rickandmortyapi.com")
 
 set(SRCS
     character.c
@@ -19,7 +19,17 @@ set(HDRS
     types.h
     )
 
-add_library(rick-and-morty STATIC ${SRCS} ${HRDS})
+add_library(rick-and-morty SHARED ${SRCS} ${HRDS})
+
+set_target_properties(rick-and-morty PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(rick-and-morty PROPERTIES SOVERSION ${PROJECT_VERSION})
+include(GNUInstallDirs)
+
+set_target_properties(rick-and-morty PROPERTIES PUBLIC_HEADER api.h)
+
+install(TARGETS rick-and-morty
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 find_package(CURL)
 find_package(JSON-C NAMES json-c)

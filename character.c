@@ -11,27 +11,27 @@ void rm_character_clear(rm_character_t *character) {
     if (!character)
         return;
 
-    FREE_IF_NONULL(character->name);
-    FREE_IF_NONULL(character->status);
-    FREE_IF_NONULL(character->species);
-    FREE_IF_NONULL(character->type);
-    FREE_IF_NONULL(character->gender);
-    FREE_IF_NONULL(character->image);
-    FREE_IF_NONULL(character->url);
-    FREE_IF_NONULL(character->created);
-    FREE_IF_NONULL(character->location.name);
-    FREE_IF_NONULL(character->location.url);
-    FREE_IF_NONULL(character->origin.name);
-    FREE_IF_NONULL(character->origin.url);
+    NULLED_FREE(character->name);
+    NULLED_FREE(character->status);
+    NULLED_FREE(character->species);
+    NULLED_FREE(character->type);
+    NULLED_FREE(character->gender);
+    NULLED_FREE(character->image);
+    NULLED_FREE(character->url);
+    NULLED_FREE(character->created);
+    NULLED_FREE(character->location.name);
+    NULLED_FREE(character->location.url);
+    NULLED_FREE(character->origin.name);
+    NULLED_FREE(character->origin.url);
     
     if (character->episode) {
         for (size_t i = 0; i < character->episode_len; i++)
-            free(character->episode[i]);
+            NULLED_FREE(character->episode[i]);
 
-        free(character->episode);
+        NULLED_FREE(character->episode);
     }
 
-    free(character);
+    NULLED_FREE(character);
 }
 
 rm_character_t *parse_character(json_object *jobj) {
@@ -46,7 +46,7 @@ rm_character_t *parse_character(json_object *jobj) {
         return NULL;
 
     if (!memset(character, 0, sizeof(rm_character_t))) {
-        free(character);
+        NULLED_FREE(character);
         return NULL;
     }
 
@@ -72,7 +72,7 @@ rm_character_t *parse_character(json_object *jobj) {
         character->episode = calloc(character->episode_len, sizeof(char *));
         
         if (!character->episode) {
-            free(character);   
+            NULLED_FREE(character);
             return NULL;
         }
 

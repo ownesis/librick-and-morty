@@ -70,11 +70,11 @@ void rm_location_clear(rm_location_t *location) {
     if (!location)
         return;
 
-    FREE_IF_NONULL(location->name);
-    FREE_IF_NONULL(location->dimension);
-    FREE_IF_NONULL(location->type);
-    FREE_IF_NONULL(location->url);
-    FREE_IF_NONULL(location->created);
+    NULLED_FREE(location->name);
+    NULLED_FREE(location->dimension);
+    NULLED_FREE(location->type);
+    NULLED_FREE(location->url);
+    NULLED_FREE(location->created);
     
     if (location->residents) {
         for (size_t i = 0; i < location->residents_len; i++)

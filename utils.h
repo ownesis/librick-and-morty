@@ -43,9 +43,6 @@
 #define NULLED_FREE(x) \
     do { free((x)); (x) = NULL; } while (0)
     
-#define FREE_IF_NONULL(x) \
-    do { if ((x)) NULLED_FREE((x)); } while (0)
-    
 #define APPEND_FILTER(f, u, n)                  \
     do {                                        \
         if (f->n)                               \

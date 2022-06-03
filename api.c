@@ -53,18 +53,18 @@ void *rm_entity_get_page(rm_info_t *info, uint64_t page, void *filter, rm_entity
     chunk = rm_api_request(url);
 
     if (!chunk.ptr) {
-        free(url);
+        NULLED_FREE(url);
         return NULL;
     }
 
-    free(url);
+    NULLED_FREE(url);
 
     jobj = json_tokener_parse(chunk.ptr);
 
     if (!jobj)
         return NULL;
     
-    free(chunk.ptr);
+    NULLED_FREE(chunk.ptr);
  
     entity = parse_entity_all(info, jobj, e_entity);
 
@@ -87,10 +87,10 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
 
     rm_all_info_clear(&info);
 
-    total_size = ((total_pages * 20) * sizeof(rm_location_t *));
-
     switch (e_entity) {
         case RM_LOCATION:
+            total_size = ((total_pages * 20) * sizeof(rm_location_t *));
+
             tmp = realloc(((rm_location_arr_t *)entity[0])->da_location, total_size);
 
             if (!tmp) {
@@ -104,6 +104,8 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
             break;
 
         case RM_CHARACTER:
+            total_size = ((total_pages * 20) * sizeof(rm_character_t *));
+
             tmp = realloc(((rm_character_arr_t *)entity[0])->da_character, total_size);
 
             if (!tmp) {
@@ -117,6 +119,8 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
             break;
 
         case RM_EPISODE:
+            total_size = ((total_pages * 20) * sizeof(rm_episode_t *));
+
             tmp = realloc(((rm_episode_arr_t *)entity[0])->da_episode, total_size);
 
             if (!tmp) {
@@ -145,8 +149,8 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
 
                 ((rm_location_arr_t *)entity[0])->len += ((rm_location_arr_t *)entity[1])->len;
 
-                free(((rm_location_arr_t *)entity[1])->da_location);
-                free(entity[1]);
+                NULLED_FREE(((rm_location_arr_t *)entity[1])->da_location);
+                NULLED_FREE(entity[1]);
                 break;
 
             case RM_CHARACTER:
@@ -162,8 +166,8 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
 
                 ((rm_character_arr_t *)entity[0])->len += ((rm_character_arr_t *)entity[1])->len;
 
-                free(((rm_character_arr_t *)entity[1])->da_character);
-                free(entity[1]);
+                NULLED_FREE(((rm_character_arr_t *)entity[1])->da_character);
+                NULLED_FREE(entity[1]);
                 break;
 
             case RM_EPISODE:
@@ -179,8 +183,8 @@ void *rm_entity_get_all(void *filter, rm_entity_t e_entity) {
 
                 ((rm_episode_arr_t *)entity[0])->len += ((rm_episode_arr_t *)entity[1])->len;
 
-                free(((rm_episode_arr_t *)entity[1])->da_episode);
-                free(entity[1]);
+                NULLED_FREE(((rm_episode_arr_t *)entity[1])->da_episode);
+                NULLED_FREE(entity[1]);
                 break;
         }
 
@@ -258,14 +262,14 @@ void *rm_entity_get_list(uint64_t array_id[], size_t array_len, rm_entity_t e_en
     if (!chunk.ptr)
         return NULL;
 
-    free(url);
+    NULLED_FREE(url);
 
     jobj = json_tokener_parse(chunk.ptr);
 
     if (!jobj)
         return NULL;
  
-    free(chunk.ptr);
+    NULLED_FREE(chunk.ptr);
 
     entity = parse_entity_list(&jobj, e_entity);
 
@@ -303,14 +307,14 @@ void *rm_entity_get(uint64_t id, rm_entity_t e_entity) {
     if (!chunk.ptr)
         return NULL;
 
-    free(url);
+    NULLED_FREE(url);
 
     jobj = json_tokener_parse(chunk.ptr);
     
     if (!jobj)
         return NULL;
 
-    free(chunk.ptr);
+    NULLED_FREE(chunk.ptr);
 
     switch (e_entity) {
         case RM_LOCATION: 
@@ -337,7 +341,7 @@ void *parse_entity_list(json_object **jobj, rm_entity_t e_entity) {
         return NULL;
 
     /* jobj is type json_type_object if only one ID */
-    if (json_object_get_type(*jobj) == json_type_object) {
+    if (json_object_is_type(*jobj, json_type_object)) {
        tmp_obj = put_inside_json_array(*jobj);
 
        if (!tmp_obj)
@@ -494,36 +498,36 @@ mem_t rm_api_request(const char *restrict endpoint) {
     curl_hndl = curl_easy_init();
 
     if (!curl_hndl) {
-        free(chunk.ptr);
+        NULLED_FREE(chunk.ptr);
         return (mem_t){NULL};
     }
 
     CURL_ERR(curl_easy_setopt(curl_hndl, CURLOPT_URL, endpoint)) {
-        free(chunk.ptr);
+        NULLED_FREE(chunk.ptr);
         curl_easy_cleanup(curl_hndl);
         return (mem_t){NULL};
     }
     
     CURL_ERR(curl_easy_setopt(curl_hndl, CURLOPT_WRITEFUNCTION, write_callback)) {
-        free(chunk.ptr);
+        NULLED_FREE(chunk.ptr);
         curl_easy_cleanup(curl_hndl);
         return (mem_t){NULL};
     }
     
     CURL_ERR(curl_easy_setopt(curl_hndl, CURLOPT_WRITEDATA, (void *)&chunk)) {
-        free(chunk.ptr);
+        NULLED_FREE(chunk.ptr);
         curl_easy_cleanup(curl_hndl);
         return (mem_t){NULL};  
     }
    
     CURL_ERR(curl_easy_perform(curl_hndl)) {
-        free(chunk.ptr);
+        NULLED_FREE(chunk.ptr);
         curl_easy_cleanup(curl_hndl);
         return (mem_t){NULL}; 
     }
     
     CURL_ERR(curl_easy_getinfo(curl_hndl, CURLINFO_RESPONSE_CODE, &response_code)) {
-        free(chunk.ptr);
+        NULLED_FREE(chunk.ptr);
         curl_easy_cleanup(curl_hndl);
         return (mem_t){NULL};
     }
@@ -531,7 +535,7 @@ mem_t rm_api_request(const char *restrict endpoint) {
     curl_easy_cleanup(curl_hndl);
 
     if (response_code != 200) {
-        free(chunk.ptr);
+        NULLED_FREE(chunk.ptr);
         return (mem_t){NULL};
     }
 
@@ -553,6 +557,6 @@ void rm_all_info_clear(rm_info_t *info) {
     if (!info)
         return;
 
-    FREE_IF_NONULL(info->next);
-    FREE_IF_NONULL(info->prev);
+    NULLED_FREE(info->next);
+    NULLED_FREE(info->prev);
 }

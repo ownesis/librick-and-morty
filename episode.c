@@ -11,11 +11,11 @@ void rm_episode_clear(rm_episode_t *episode) {
     if (!episode)
         return;
 
-    FREE_IF_NONULL(episode->name);
-    FREE_IF_NONULL(episode->url);
-    FREE_IF_NONULL(episode->created);
-    FREE_IF_NONULL(episode->air_date);
-    FREE_IF_NONULL(episode->episode);
+    NULLED_FREE(episode->name);
+    NULLED_FREE(episode->url);
+    NULLED_FREE(episode->created);
+    NULLED_FREE(episode->air_date);
+    NULLED_FREE(episode->episode);
     
     if (episode->characters) {
         for (size_t i = 0; i < episode->characters_len; i++)
