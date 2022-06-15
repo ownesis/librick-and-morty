@@ -12,7 +12,7 @@
 # Download
 ```sh
 git clone https://github.com/ownesis/librick-and-morty.git
-cd librick-nd-morty
+cd librick-and-morty
 ```
 
 # Build
